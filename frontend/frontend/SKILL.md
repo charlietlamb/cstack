@@ -18,6 +18,8 @@ This skill has two jobs. It sets the default standards for React and TypeScript 
 - Use TanStack Query for querying, caching, mutations, invalidation, prefetching, and server-state lifecycle management.
 - Use shadcn/ui components before creating custom UI primitives, and compose them with semantic tokens and accessible structure.
 - Use the `cn` util for className concatenation and conditional classes.
+- Never uppercase interface text. `uppercase` and `tracking-wider` on a label shout, cost legibility, and date the design. Separate a heading from its content with a smaller size or a muted color instead.
+- Use sentence case for headings, labels, buttons, and badges. Capitals are for proper nouns and identifiers the system defines.
 
 ## Which skill to use
 

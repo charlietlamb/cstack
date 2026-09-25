@@ -14,7 +14,8 @@ Charlie's agent skills, grouped by area. Inspired by [gstack](https://github.com
 |---|---|
 | `pstack/` | `/poteto` plus 47 vendored pstack skills (playbooks, principles, how, why, arena, swarm, interrogate, unslop, ...). Agents `poteto-agent`, `pstack-readonly`, `comment-sicko`. |
 | `frontend/` | `/frontend` (standards plus a map of every skill below). `/dev` (production-gated preview routes with static fixtures), `/mockup` (N intentionally different mockups, default 10), `/break-it`. `/opinionated` (strict React and TypeScript standards) and the skills it pulls in: `frontend`, `shadcn`, `tanstack-query-best-practices`, `vercel-react-best-practices`, `react-doctor`, `baseline-ui`, `references`, `design-engineer`, `apple-design`, `improve-ui`, `interface-review`, and `better-accessibility`, `better-colors`, `better-interface`, `better-layout`, `better-typography`, `better-ui`, `better-writing`. `/emil` and the Emil skills it routes to: `emil-design-eng`, `animations`, `find-animation-opportunities`, `improve-animations`, `review-animations`, `animation-vocabulary`. |
-| `backend/effect/` | `effect`, `effect-composition`, `effect-service-design`. |
+| `backend/effect/` | `effect`, `effect-composition`, `effect-service-design`, `code-standards`. |
+| `general/` | `repo-map` (default file structure and architecture rules, plus a generator for a per-repo `<repo>-map`), `repo-hygiene`, `avoid-feature-creep`, `openlogs-server-logs`. |
 
 Skill names must be unique across the repo. `install.sh` refuses to run when two collide.
 

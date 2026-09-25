@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "usage: pstack-panel <codex[:model]|grok[:model]> <prompt-file> <out-file> [--cwd DIR] [--write]" >&2
+  exit 2
+}
+
+[ $# -ge 3 ] || usage
+seat="$1"
+prompt_file="$2"
+out_file="$3"
+shift 3
+
+work_dir="$PWD"
+write=false
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --cwd) work_dir="$2"; shift 2 ;;
+    --write) write=true; shift ;;
+    *) usage ;;
+  esac
+done
+
+[ -f "$prompt_file" ] || { echo "prompt file not found: $prompt_file" >&2; exit 2; }
+family="${seat%%:*}"
+model=""
+[ "$seat" != "$family" ] && model="${seat#*:}"
+mkdir -p "$(dirname "$out_file")"
+
+case "$family" in
+  codex)
+    command -v codex >/dev/null || { echo "codex not installed" >&2; exit 3; }
+    sandbox="read-only"
+    $write && sandbox="workspace-write"
+    args=(exec --skip-git-repo-check --ephemeral -C "$work_dir" -s "$sandbox" -o "$out_file")
+    [ -n "$model" ] && args+=(-m "$model")
+    codex "${args[@]}" - < "$prompt_file" > "$out_file.log" 2>&1
+    ;;
+  grok)
+    command -v grok >/dev/null || { echo "grok not installed" >&2; exit 3; }
+    mode="plan"
+    $write && mode="acceptEdits"
+    args=(--prompt-file "$prompt_file" --cwd "$work_dir" --output-format plain --permission-mode "$mode")
+    [ -n "$model" ] && args+=(-m "$model")
+    grok "${args[@]}" > "$out_file" 2> "$out_file.log"
+    ;;
+  *)
+    echo "unknown seat family: $family (expected codex or grok)" >&2
+    exit 2
+    ;;
+esac
+
+[ -s "$out_file" ] || { echo "seat $seat produced no output; see $out_file.log" >&2; exit 4; }
+echo "$seat -> $out_file"
